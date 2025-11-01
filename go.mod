@@ -1,4 +1,4 @@
-module github.com/go-lang-projects/simplebank
+module github.com/spamula09/go-simplebank
 
 go 1.25.3
 
