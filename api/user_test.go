@@ -12,6 +12,7 @@ import (
 	"testing"
 
 	"github.com/gin-gonic/gin"
+	"github.com/lib/pq"
 	mockdb "github.com/spamula09/go-simplebank/db/mock"
 	db "github.com/spamula09/go-simplebank/db/sqlc"
 	"github.com/spamula09/go-simplebank/util"
@@ -112,7 +113,7 @@ func TestCreateUserAPI(t *testing.T) {
 				store.EXPECT().
 					CreateUser(gomock.Any(), gomock.Any()).
 					Times(1).
-					Return(db.User{}, gomock.All())
+					Return(db.User{}, &pq.Error{Code: "23505"})
 			},
 			checkResponse: func(recorder *httptest.ResponseRecorder) {
 				require.Equal(t, http.StatusForbidden, recorder.Code)
@@ -181,7 +182,7 @@ func TestCreateUserAPI(t *testing.T) {
 			store := mockdb.NewMockStore(ctrl)
 			tc.buildStubs(store)
 
-			server := newTestServer(t,store)
+			server := newTestServer(t, store)
 			recorder := httptest.NewRecorder()
 
 			// Marshal body data to JSON
