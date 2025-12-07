@@ -26,6 +26,13 @@ LIMIT $2
 OFFSET $3;
 
 
+-- name: ListAccount :many
+SELECT * FROM accounts
+ORDER BY id 
+LIMIT $1
+OFFSET $2;
+
+
 -- name: UpdateAccount :one 
 UPDATE accounts 
 SET balance =$2
